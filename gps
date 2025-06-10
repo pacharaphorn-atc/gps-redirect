@@ -14,9 +14,10 @@
 
     // เรียกตำแหน่ง
     navigator.geolocation.getCurrentPosition(function(pos) {
-      const lat = pos.coords.latitude.toFixed(6);
-      const lng = pos.coords.longitude.toFixed(6);
-      window.location.href = `${formUrl}?usp=pp_url&${entryId}=${lat},${lng}`;
+    const lat = pos.coords.latitude.toFixed(6);
+    const lng = pos.coords.longitude.toFixed(6);
+    const coord = `${lat},${lng}`;
+    window.location.href = `${formUrl}?usp=pp_url&${entryId}=${coord}`;
     }, function() {
       document.getElementById("message").innerText = "ไม่สามารถดึงตำแหน่งได้ กรุณาลองใหม่";
     });
