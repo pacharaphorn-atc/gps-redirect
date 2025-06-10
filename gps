@@ -5,21 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <p>กำลังโหลดตำแหน่งของคุณ กรุณารอสักครู่...</p>
+  <p id="message">กำลังโหลดตำแหน่งของคุณ กรุณารอสักครู่...</p>
+
   <script>
+    // ตั้งค่าลิงก์ Google Form และ Entry ID ที่ต้องการ
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSen0WiskZGdwrVbxaomauj_E0KzEcRQll_ItvFxPp54Tk0FIQ/viewform";
+    const entryId = "entry.1974648496";
+
+    // เรียกตำแหน่ง
     navigator.geolocation.getCurrentPosition(function(pos) {
       const lat = pos.coords.latitude.toFixed(6);
       const lng = pos.coords.longitude.toFixed(6);
-      // ——————————————————————————————
-      // เปลี่ยน 2 ค่าให้ตรงกับของคุณ
-      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSen0WiskZGdwrVbxaomauj_E0KzEcRQll_ItvFxPp54Tk0FIQ/viewform"; // ลิงก์ฟอร์มของคุณ
-      const entryId = "entry.1974648496";                                  // entry ID ของช่อง “ตำแหน่ง”
-      // ——————————————————————————————
       window.location.href = `${formUrl}?usp=pp_url&${entryId}=${lat},${lng}`;
-    }, function(err) {
-      alert("ไม่สามารถดึงตำแหน่งได้ โปรดลองใหม่อีกครั้ง");
+    }, function() {
+      document.getElementById("message").innerText = "ไม่สามารถดึงตำแหน่งได้ กรุณาลองใหม่";
     });
   </script>
 </body>
 </html>
+
 
