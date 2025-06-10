@@ -8,45 +8,39 @@
   <p id="message">กำลังโหลดตำแหน่งของคุณ กรุณารอสักครู่...</p>
 
   <script>
-    // ตั้งค่าลิงก์ Google Form และ Entry ID ที่ต้องการ
     const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSen0WiskZGdwrVbxaomauj_E0KzEcRQll_ItvFxPp54Tk0FIQ/viewform";
-    const entryId = "entry.1974648496"; // นี่คือ entry ID ของช่อง "คำตอบสั้นๆ" ใน Google Form
+    const entryId = "entry.1974648496"; // ใส่ entry ID ของช่องตำแหน่ง
 
-    // เรียกตำแหน่ง
     navigator.geolocation.getCurrentPosition(function(pos) {
-      // กรณีดึงตำแหน่งได้สำเร็จ
       const lat = pos.coords.latitude.toFixed(6);
       const lng = pos.coords.longitude.toFixed(6);
-      const locationString = `${lat},${lng}`; // สร้างสตริง "ละติจูด,ลองจิจูด"
-      window.location.href = `${formUrl}?usp=pp_url&${entryId}=${encodeURIComponent(locationString)}`;
+      const locationString = `${lat},${lng}`;
+      const redirectUrl = `${formUrl}?usp=pp_url&${entryId}=${encodeURIComponent(locationString)}`;
+      window.location.href = redirectUrl;
     }, function(error) {
-      // กรณีไม่สามารถดึงตำแหน่งได้ (เช่น ผู้ใช้ปฏิเสธ หรือเกิดข้อผิดพลาดอื่น)
-      let errorMessageForForm = "เครื่องมือไม่อนุญาตให้เข้าถึงตำแหน่ง"; // ข้อความเริ่มต้นสำหรับส่งเข้าฟอร์ม
+      let errorMessage = "ไม่สามารถดึงตำแหน่งได้";
 
-      // สามารถระบุข้อความที่เฉพาะเจาะจงมากขึ้นได้หากต้องการ
       switch(error.code) {
         case error.PERMISSION_DENIED:
-          errorMessageForForm = "ผู้ใช้ปฏิเสธการเข้าถึงตำแหน่ง";
+          errorMessage = "ผู้ใช้ปฏิเสธการเข้าถึงตำแหน่ง";
           break;
         case error.POSITION_UNAVAILABLE:
-          errorMessageForForm = "ข้อมูลตำแหน่งไม่พร้อมใช้งาน";
+          errorMessage = "ข้อมูลตำแหน่งไม่พร้อมใช้งาน";
           break;
         case error.TIMEOUT:
-          errorMessageForForm = "หมดเวลาในการดึงตำแหน่ง";
+          errorMessage = "หมดเวลาในการดึงตำแหน่ง";
           break;
         case error.UNKNOWN_ERROR:
-          errorMessageForForm = "เกิดข้อผิดพลาดที่ไม่รู้จักในการดึงตำแหน่ง";
+          errorMessage = "เกิดข้อผิดพลาดที่ไม่รู้จัก";
           break;
       }
-      
-      // อัปเดตข้อความบนหน้าเว็บก่อนที่จะเปลี่ยนหน้า (ให้ผู้ใช้เห็นแป๊บหนึ่ง)
-      document.getElementById("message").innerText = errorMessageForForm;
 
-      // ส่งข้อความข้อผิดพลาดเข้าไปในช่อง Google Form แทน
-      // ใช้ encodeURIComponent เพื่อให้แน่ใจว่าข้อความจะถูกส่งไปอย่างถูกต้องใน URL
-      window.location.href = `${formUrl}?usp=pp_url&${entryId}=${encodeURIComponent(errorMessageForForm)}`;
+      document.getElementById("message").innerText = errorMessage;
+
+      // ส่งข้อความ error ไปยัง Google Form แทนพิกัด
+      const fallbackUrl = `${formUrl}?usp=pp_url&${entryId}=${encodeURIComponent(errorMessage)}`;
+      window.location.href = fallbackUrl;
     });
   </script>
 </body>
 </html>
-
