@@ -9,7 +9,7 @@
 
   <script>
     const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSen0WiskZGdwrVbxaomauj_E0KzEcRQll_ItvFxPp54Tk0FIQ/viewform";
-    const entryId = "entry.1974648496"; // ใส่ entry ID ของช่องตำแหน่ง
+    const entryId = "entry.1974648496"; // << เปลี่ยนเฉพาะเลขนี้ถ้าไม่ใช่ช่องพิกัด
 
     navigator.geolocation.getCurrentPosition(function(pos) {
       const lat = pos.coords.latitude.toFixed(6);
@@ -37,7 +37,6 @@
 
       document.getElementById("message").innerText = errorMessage;
 
-      // ส่งข้อความ error ไปยัง Google Form แทนพิกัด
       const fallbackUrl = `${formUrl}?usp=pp_url&${entryId}=${encodeURIComponent(errorMessage)}`;
       window.location.href = fallbackUrl;
     });
